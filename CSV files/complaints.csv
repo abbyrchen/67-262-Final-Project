@@ -1,0 +1,6 @@
+complaint_id,problem_type,problem_description,transaction_id
+1,shipping,came broken,1
+2,product,not as pictured,2
+3,shipping,never came,4
+4,product,different size than described,5
+5,shipping,took way longer than expected,8
