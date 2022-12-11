@@ -58,7 +58,11 @@ Choose (1-1, 0 to quit): '''
             conn.close()
 
 def write_review_menu():
-    write_review()
+    r_id = input("review id: ")
+    rating = input("rating: ")
+    review = input("review: ")
+    p_id = input("product id: ")
+    write_review(r_id, rating, review, p_id)
     
 #------------------------------------------------------------
 # list_users
@@ -67,15 +71,15 @@ def write_review_menu():
 def write_review(r_id,rating, review, p_id):
     tmpl = f'''
     INSERT INTO Reviews (review_id, rating, description, product_id)
-      VALUES ({r_id}, {rating}, '{review}', {p_id})
+        VALUES(%s, %s, %s, %s);
     '''
-    cmd = cur.mogrify(tmpl)
+    cmd = cur.mogrify(tmpl, (r_id, rating, review, p_id,))
     print_cmd(cmd)
     cur.execute(cmd)
     rows = cur.fetchall()
     print_rows(rows)
     print("=================================")
-    print("count, product_name")
+    print("rating, review")
     for row in rows:
         r_id, rating, review, p_id = row
         print(f"{r_id}, {rating}, {review}, {p_id}")
