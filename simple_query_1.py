@@ -46,7 +46,7 @@ Choose (1-1, 0 to quit): '''
         elif choice == 1:
             print("Placing a bid on the following item")
             print("\n Bid amount = 90 \n")
-            actions[choice](amount=90)
+            actions[choice](bid_id=9, auction_id=9, amount=90)
             show_menu()
         else:
             print("\n\n* Invalid choice (%s). Choose again." % choice)
@@ -58,29 +58,30 @@ Choose (1-1, 0 to quit): '''
             conn.close()
 
 def place_bid_menu():
-    place_bid()
+    bid_id = input("bid id: ")
+    auction_id = input("auction id: ")
+    amount = input("amount: ")
+    place_bid(bid_id, auction_id, amount)
     
 #------------------------------------------------------------
 # list_users
 #------------------------------------------------------------
 
-def place_bid(amount):
+def place_bid(bid_id, auction_id, amount):
     tmpl = f'''
-    INSERT INTO Bids (bid_id, auction_id, amount)
-      SELECT (max(bid_id) + 1), auction_id, {amount}
-        FROM Bids
-       GROUP BY bid_id, auction_id
+    INSERT INTO Bids(bid_id, auction_id, amount)
+        VALUES (%s, %s, %s);
     '''
-    cmd = cur.mogrify(tmpl)
+    cmd = cur.mogrify(tmpl, (bid_id, auction_id, amount,))
     print_cmd(cmd)
     cur.execute(cmd)
     rows = cur.fetchall()
     print_rows(rows)
     print("=================================")
-    print("bid_id, auction_id, amount")
+    print("auction_id, amount")
     for row in rows:
-        b_id, a_id, amt = row
-        print(f"{b_id}, {a_id}, {amt}")
+        a_id, amt = row
+        print(f"{a_id}, {amt}")
 
 actions = { 1:place_bid }
 
