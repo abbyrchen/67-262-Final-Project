@@ -45,7 +45,7 @@ Choose (1-1, 0 to quit): '''
             conn.close()
         elif choice == 1:
             print("Purchasing the following item")
-            actions[choice](p_id=1)
+            actions[choice](t_id=12, dte='2022-12-11', price=90, amt=1, c_id=13, p_id=1)
             show_menu()
         else:
             print("\n\n* Invalid choice (%s). Choose again." % choice)
@@ -56,20 +56,27 @@ Choose (1-1, 0 to quit): '''
         if conn != None:
             conn.close()
 
-def place_bid_menu():
-    place_bid()
+def purchase_item_menu():
+    t_id = input("transaction id: ")
+    dte = input("date: ")
+    price = input("price: ")
+    amount = input("amount: ")
+    c_id = input("customer id: ")
+    p_id = input("product id: ")
+    purchase_item(t_id, dte, price, amount, c_id, p_id)
     
 #------------------------------------------------------------
 # list_users
 #------------------------------------------------------------
 
-def place_bid(p_id):
+def purchase_item(t_id, dte, price, amt, c_id, p_id):
     tmpl = f'''
-    DELETE FROM Products
-      WHERE product_id = p_id
-
-    INSERT INTO Transactions
-      VALUES()
+    INSERT INTO Transactions (transaction_id, date, price, amount, customer_id, product_id)
+      VALUES({t_id}, '{dte}', {price}, {amt}, {c_id}, {p_id});
+    
+    UPDATE Products
+       SET amount = amount - 1
+     WHERE product_id = {p_id}
     '''
     cmd = cur.mogrify(tmpl)
     print_cmd(cmd)
@@ -77,12 +84,12 @@ def place_bid(p_id):
     rows = cur.fetchall()
     print_rows(rows)
     print("=================================")
-    print("p_id")
+    print("p_id, price")
     for row in rows:
-        b_id, a_id, amt = row
-        print(f"{b_id}, {a_id}, {amt}")
+       date, p_id, price = row
+       print(f"{date}, {p_id}, {price}")
 
-actions = { 1:place_bid }
+actions = { 1:purchase_item }
 
 if __name__ == '__main__':
     try:
