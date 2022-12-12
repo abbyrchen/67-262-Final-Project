@@ -1,4 +1,4 @@
-bid_id,auction_id,amount
+bid_id,auction_id,bidded_amount
 1,6,40
 2,7,150
 3,8,400
