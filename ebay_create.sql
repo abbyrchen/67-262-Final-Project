@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-12-06 23:25:01.685
+-- Last modification date: 2022-12-12 01:52:41.591
 
 -- tables
 -- Table: Auctions
@@ -14,7 +14,7 @@ CREATE TABLE Auctions (
 CREATE TABLE Bids (
     bid_id int  NOT NULL,
     auction_id int  NOT NULL,
-    amount int  NOT NULL,
+    bidded_amount int  NOT NULL,
     CONSTRAINT Bids_pk PRIMARY KEY (bid_id)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE Products (
     product_id int  NOT NULL,
     product_name text  NOT NULL,
     price int  NOT NULL,
-    amount int  NOT NULL,
+    amount_in_stock int  NOT NULL,
     category text  NOT NULL,
     seller_id int  NOT NULL,
     CONSTRAINT Products_pk PRIMARY KEY (product_id)
@@ -69,7 +69,6 @@ CREATE TABLE Sellers (
 CREATE TABLE Transactions (
     transaction_id int  NOT NULL,
     date date  NOT NULL,
-    price int  NOT NULL,
     amount int  NOT NULL,
     customer_id int  NOT NULL,
     product_id int  NOT NULL,
