@@ -68,20 +68,48 @@ def place_bid_menu():
 #------------------------------------------------------------
 
 def place_bid(bid_id, auction_id, amount):
+    tmpl0 = f'''
+        SELECT *
+          FROM Bids
+    '''
+    cmd0 = cur.mogrify(tmpl0)
+    cur.execute(cmd0)
+    rows0 = cur.fetchall()
+    print("=================================")
+    print("(Bids before)\n")
+    print("bid_id, auction_id, bidded_amount")
+    for row0 in rows0:
+       bid_id, auction_id, amount = row0
+       print(f"{bid_id},{auction_id}, {amount}")
+    print("=================================")
+    print("=================================")
+    print("=================================")
+    print("=================================")
+
     tmpl = f'''
-    INSERT INTO Bids(bid_id, auction_id, amount)
+    INSERT INTO Bids(bid_id, auction_id, bidded_amount)
         VALUES (%s, %s, %s);
     '''
     cmd = cur.mogrify(tmpl, (bid_id, auction_id, amount,))
     print_cmd(cmd)
     cur.execute(cmd)
-    rows = cur.fetchall()
-    print_rows(rows)
     print("=================================")
-    print("auction_id, amount")
-    for row in rows:
-        a_id, amt = row
-        print(f"{a_id}, {amt}")
+    print(f"A bid for auction id = {auction_id} was placed on bid_id = {bid_id} of {amount}")
+    print("=================================")
+
+    tmpl1 = f'''
+        SELECT *
+          FROM Bids
+    '''
+    cmd1 = cur.mogrify(tmpl1)
+    cur.execute(cmd1)
+    rows1 = cur.fetchall()
+    print("=================================")
+    print("(Bids after)\n")
+    print("bid_id, auction_id, amount")
+    for row1 in rows1:
+       bid_id1, auction_id1, amount1 = row1
+       print(f"{bid_id1},{auction_id1}, {amount1}")
 
 actions = { 1:place_bid }
 
