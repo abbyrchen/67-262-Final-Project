@@ -24,6 +24,8 @@ def print_rows(rows):
 #------------------------------------------------------------
 
 def show_menu():
+    print('''User Story 3 - As a user I want to filter for items under a certain price or category
+    ''')
     menu = '''
 
 --------------------------------------------------
@@ -60,12 +62,12 @@ def apply_filters_menu():
 
 def apply_filters(preferred_price, preferred_category):
     tmpl = f'''
-        SELECT product_id, product_name, p.price, p.category
+        SELECT p.product_id, product_name, p.price, p.category
           FROM Products AS p
                JOIN Transactions AS t
-                    ON p.product_id = t.product
+                    ON p.product_id = t.product_id
                JOIN Customers AS c
-                    ON c.customer_id = t.customer
+                    ON c.customer_id = t.customer_id
                JOIN Users as u
                     ON u.user_id = c.customer_id
          WHERE p.price <= {preferred_price} 
